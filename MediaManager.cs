@@ -16,29 +16,29 @@ namespace MP3_Converter
 
         private void Convert(string folderPath, string videoLink)
         {
-            var video = GetVideoLink(videoLink);
-            ConvertBytes(folderPath, video);
-            var inputFile = InputFile(folderPath, video);
-            var outputFile = OutputFile(folderPath, video);
+            var video = YouTube.Default.GetVideo(videoLink);
+            File.WriteAllBytes($"{folderPath}/{video.FullName}", video.GetBytes());
+            var inputFile = InputOutputFile(folderPath, video, FileType.InputFile);
+            var outputFile = InputOutputFile(folderPath, video, FileType.OutputFile);
             ConvertVideo(inputFile, outputFile);
         }
 
-        private YouTubeVideo GetVideoLink(string vidoeLink) => YouTube.Default.GetVideo(vidoeLink);
-
-        private void ConvertBytes(string folderPath, YouTubeVideo videoLink) => File.WriteAllBytes($"{folderPath}/{videoLink.FullName}", videoLink.GetBytes());
-
-        private MediaFile InputFile(string folderPath, YouTubeVideo videoLink) => new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}" };
-
-        private MediaFile OutputFile(string folderPath, YouTubeVideo videoLink) => new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}.mp3" };
+        private MediaFile InputOutputFile(string folderPath, YouTubeVideo videoLink, FileType fileType) => 
+           fileType == FileType.InputFile? new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}" }: new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}.mp3" };
 
         private void ConvertVideo(MediaFile inputFile, MediaFile outputFile)
         {
             using (var engine = new Engine())
             {
                 engine.GetMetadata(inputFile);
-
                 engine.Convert(inputFile, outputFile);
             }
+        }
+
+        enum FileType
+        {
+            InputFile,
+            OutputFile
         }
     }
 }
