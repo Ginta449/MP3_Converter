@@ -10,26 +10,34 @@ namespace MP3_Converter
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter folder path or type stop to exit:");
-            string folderPath = Console.ReadLine();
-
-            if(folderPath != "stop")
+            try
             {
-                for (int i = 0; i < 100000; i++)
-                {
-                    Console.WriteLine("Enter video link:");
-                    string videoLink = Console.ReadLine();
+                Console.WriteLine("Enter folder path or type stop to exit:");
+                string folderPath = Console.ReadLine();
 
-                    if (videoLink != "stop")
+                if (folderPath != "stop")
+                {
+                    for (int i = 0; i < 100000; i++)
                     {
-                        new MediaManager(folderPath, videoLink);
-                    }
-                    else
-                    {
-                        break;
+                        Console.WriteLine("Enter video link:");
+                        string videoLink = Console.ReadLine();
+
+                        if (videoLink != "stop")
+                        {
+                            new MediaManager(folderPath, videoLink);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.Read();
             }
+           
         }
     }
 }
