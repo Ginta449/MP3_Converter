@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,10 +33,10 @@ namespace MP3_Converter
                         }
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.Read();
+                new Logger().LogError("", ex.Message, ex.StackTrace);
             }
            
         }
