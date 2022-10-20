@@ -36,9 +36,9 @@ namespace MP3_Converter
             }
             catch(Exception ex)
             {
-                new Logger().LogError("", ex.Message, ex.StackTrace);
+                new Logger().LogError("Wrong folder path or youtube link. Press any key to exit.", ex.Message, ex.StackTrace);
             }
-           
+            Console.Read();
         }
     }
 }
