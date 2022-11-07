@@ -12,19 +12,21 @@ namespace MP3_Converter
 {
     public class MediaManager
     {
-        public MediaManager(string folderPath, string videoLink) => Convert(folderPath, videoLink);
-
+        public MediaManager(string folderPath, string videoLink)
+        {
+            Convert(folderPath, videoLink);
+        }
         private void Convert(string folderPath, string videoLink)
         {
             var video = YouTube.Default.GetVideo(videoLink);
-            File.WriteAllBytes($"{folderPath}/{video.FullName}", video.GetBytes());
+            File.WriteAllText(folderPath + "/" + video.FullName.Replace("mp4", "mp3"), video.FullName);
             var inputFile = InputOutputFile(folderPath, video, FileType.InputFile);
             var outputFile = InputOutputFile(folderPath, video, FileType.OutputFile);
             ConvertVideo(inputFile, outputFile);
         }
 
-        private MediaFile InputOutputFile(string folderPath, YouTubeVideo videoLink, FileType fileType) => 
-           fileType == FileType.InputFile? new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}" }: new MediaFile { Filename = $"{folderPath}/{videoLink.FullName}.mp3" };
+        private MediaFile InputOutputFile(string folderPath, YouTubeVideo videoLink, FileType fileType) =>
+           fileType == FileType.InputFile ? new MediaFile { Filename = folderPath + "/" + videoLink.FullName.Replace("mp4", "mp3") } : new MediaFile { Filename = folderPath + "/" + videoLink.FullName.Replace("mp4", "mp3") };
 
         private void ConvertVideo(MediaFile inputFile, MediaFile outputFile)
         {
